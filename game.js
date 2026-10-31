@@ -11,11 +11,15 @@ let bullets = [];
 let stars = [];
 let enemies = [];
 
+let score = 0;
+let health = 100;
+
 let shootCooldown = 0;
 let enemySpawnTimer = 0;
 
 let flameSize = 40;
 let flameDirection = 1;
+
 
 let playerX = 450;
 let playerY = 400;
@@ -137,6 +141,14 @@ function gameLoop() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '24px Arial';
+    ctx.fillText('Score: ' + score, 20, 35);
+
+    ctx.fillStyle = '#ff40d6';
+    ctx.font = '24px Arial';
+    ctx.fillText('Health: ' + health, 20, 65);
+
     for (let star of stars) {
         star.y += star.speed;
 
@@ -172,7 +184,57 @@ function gameLoop() {
         enemy.y += enemy.speed;
         drawEnemies(enemy);
     }
+
     enemies = enemies.filter(enemy => enemy.y < canvas.height)
+
+    let remainingBullets = [];
+    let remainingEnemies = [];
+
+    for (let enemy of enemies) {
+        let enemyHit = false;
+
+        for (let bullet of bullets) {
+            if (bullet.hit) {
+                continue;
+            }
+
+            let dx = bullet.x - enemy.x;
+            let dy = bullet.y - enemy.y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 17) {
+                enemyHit = true;
+                bullet.hit = true;
+
+                score += 10;
+            }
+        }
+
+        if (!enemyHit) {
+            remainingEnemies.push(enemy);
+        }
+    }
+
+    remainingBullets = bullets.filter(bullet => !bullet.hit);
+
+    bullets = remainingBullets;
+    enemies = remainingEnemies;
+
+    let survivingEnemies = [];
+
+    for (let enemy of enemies) {
+        let dx = enemy.x - playerX;
+        let dy = enemy.y - playerY;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 35) {
+            health = Math.max(0, health - 20);
+        } else {
+            survivingEnemies.push(enemy);
+        }
+    }
+
+    enemies = survivingEnemies;
 
     flameSize += flameDirection;
 
