@@ -8,10 +8,11 @@ let star = {
 };
 
 let bullets = [];
-
 let stars = [];
+let enemies = [];
 
 let shootCooldown = 0;
+let enemySpawnTimer = 0;
 
 let flameSize = 40;
 let flameDirection = 1;
@@ -91,6 +92,14 @@ function drawBullet(bullet) {
     ctx.fillRect(bullet.x, bullet.y, 4, 15);
 }
 
+function drawEnemies(enemy) {
+    ctx.fillStyle = '#ff40d6';
+    ctx.beginPath();
+    ctx.arc(enemy.x, enemy.y, 15, 0, Math.PI * 2);
+
+    ctx.fill();
+}
+
 function gameLoop() {
     if(keys[' ']) {
         if(shootCooldown <= 0) {
@@ -142,10 +151,28 @@ function gameLoop() {
     for (let bullet of bullets) {
         bullet.y -= bullet.speed;
 
-        
         drawBullet(bullet);
     }
     bullets = bullets.filter(bullet => bullet.y >= 0);
+
+    if(enemySpawnTimer <= 0) {
+        enemies.push({
+            x: Math.random() * canvas.width,
+            y: 0,
+            speed: Math.random() * 2+1
+        });
+        enemySpawnTimer = 60;
+    }
+
+    if(enemySpawnTimer > 0) {
+        enemySpawnTimer--;
+    }
+
+    for (let enemy of enemies) {
+        enemy.y += enemy.speed;
+        drawEnemies(enemy);
+    }
+    enemies = enemies.filter(enemy => enemy.y < canvas.height)
 
     flameSize += flameDirection;
 
