@@ -1,8 +1,6 @@
 # 🚀 Starfall
 
-Starfall is a neon-themed 2D space shooter game
-developed as an individual Software Development
-Project using Electron, HTML, CSS, and JavaScript.
+Starfall is a neon-themed 2D space shooter game developed as an individual Software Development Project using Electron, HTML, CSS, and JavaScript.
 
 ## 🎮 Current Features
 
@@ -11,6 +9,14 @@ Project using Electron, HTML, CSS, and JavaScript.
 - Player spaceship
 - WASD and arrow key movement
 - Player movement boundaries
+- Animated neon stars
+- Shooting mechanics
+- Enemy spaceships and spawning
+- Bullet-enemy collision detection
+- Player health system
+- Score system
+- Game Over detection
+- Neon Game Over screen
 
 ## 🕹️ Controls
 
@@ -20,6 +26,7 @@ Project using Electron, HTML, CSS, and JavaScript.
 | S / ↓ | Move Down |
 | A / ← | Move Left |
 | D / → | Move Right |
+| Space | Shoot |
 
 ## 🛠️ Technologies Used
 
@@ -31,13 +38,12 @@ Project using Electron, HTML, CSS, and JavaScript.
 
 ## 📌 Upcoming Features
 
-- Animated neon stars
-- Enemy spaceships
-- Shooting mechanics
-- Collision detection
-- Health system
-- Score system
-- Game over screen
+- Final score display on Game Over screen
+- Restart button
+- Start menu
+- Pause functionality
+- Sound effects
+- Difficulty progression
 
 ## 👩‍💻 Developer
 
