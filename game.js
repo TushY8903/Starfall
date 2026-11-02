@@ -13,6 +13,7 @@ let enemies = [];
 
 let score = 0;
 let health = 100;
+let gameOver = false;
 
 let shootCooldown = 0;
 let enemySpawnTimer = 0;
@@ -104,7 +105,28 @@ function drawEnemies(enemy) {
     ctx.fill();
 }
 
+function drawGameOver() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#ff40d6';
+    ctx.font = 'bold 50px Arial';
+    ctx.textAlign = 'center';
+
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = '#ff40d6';
+
+    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
+
+    ctx.shadowBlur = 0;
+    ctx.textAlign = 'left';
+}
+
 function gameLoop() {
+    if (gameOver) {
+        drawGameOver();
+        return;
+    }
     if(keys[' ']) {
         if(shootCooldown <= 0) {
             bullets.push({
@@ -234,6 +256,10 @@ function gameLoop() {
         }
     }
 
+    if (health <= 0) {
+        gameOver = true;
+    }
+        
     enemies = survivingEnemies;
 
     flameSize += flameDirection;
