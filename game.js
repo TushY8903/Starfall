@@ -118,6 +118,14 @@ function drawGameOver() {
 
     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
 
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = '24px Arial';
+    ctx.fillText(
+        'Final Score: '+ score,
+        canvas.width / 2,
+        canvas.height / 2 + 50
+    );
+
     ctx.shadowBlur = 0;
     ctx.textAlign = 'left';
 }
