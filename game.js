@@ -19,6 +19,8 @@ let playerX = 450;
 let playerY = 400;
 let playerSpeed = 5;
 
+let gameState = 'menu';
+
 let keys = {};
 
 for (let index = 0; index < 100; index++) {
@@ -55,6 +57,20 @@ canvas.addEventListener('click', (event) => {
         mouseY <= canvas.height / 2 + 90 + 45
     ) {
         restartGame();
+    }
+});
+
+canvas.addEventListener('click', (event) => {
+    let mouseX = event.offsetX;
+    let mouseY = event.offsetY;
+
+    if(gameState === 'menu' &&
+        mouseX >= 360 &&
+        mouseX <= 540 &&
+        mouseY >= 300 &&
+        mouseY <= 350
+    ) {
+        gameState = 'playing';
     }
 });
 
@@ -194,7 +210,46 @@ function restartGame() {
     gameLoop();
 }
 
+function drawMenu() {
+    ctx.fillStyle = '#080816';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = 'bold 60px Arial';
+    ctx.textAlign = 'center';
+
+    ctx.fillText(
+        'STARFALL',
+        canvas.width / 2,
+        canvas.height / 2
+    );
+
+    ctx.fillStyle = '#00f5ff';
+
+    ctx.fillRect(
+        canvas.width / 2 - 90,
+        canvas.height / 2 + 50,
+        180,
+        50
+    );
+
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        'PLAY',
+        canvas.width / 2,
+        canvas.height / 2 + 82
+    );
+}
+
 function gameLoop() {
+    if(gameState == 'menu') {
+        drawMenu();
+        requestAnimationFrame(gameLoop);
+        return;
+    }
 
     if (gameOver) {
         drawGameOver();
