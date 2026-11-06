@@ -72,6 +72,15 @@ canvas.addEventListener('click', (event) => {
     ) {
         gameState = 'playing';
     }
+
+    if(gameState === 'menu' &&
+        mouseX >= 360 &&
+        mouseX <= 540 &&
+        mouseY >= 370 &&
+        mouseY <= 420
+    ) {
+        gameState = 'controls';
+    }
 });
 
 function drawPlayer() {
@@ -214,6 +223,7 @@ function drawMenu() {
     ctx.fillStyle = '#080816';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // STARFALL title
     ctx.fillStyle = '#00f5ff';
     ctx.font = 'bold 60px Arial';
     ctx.textAlign = 'center';
@@ -224,6 +234,7 @@ function drawMenu() {
         canvas.height / 2
     );
 
+    // PLAY button
     ctx.fillStyle = '#00f5ff';
 
     ctx.fillRect(
@@ -235,18 +246,121 @@ function drawMenu() {
 
     ctx.fillStyle = '#080816';
     ctx.font = 'bold 24px Arial';
-    ctx.textAlign = "center";
 
     ctx.fillText(
         'PLAY',
         canvas.width / 2,
         canvas.height / 2 + 82
     );
+
+    // CONTROLS button
+    ctx.fillStyle = '#ff40d6';
+
+    ctx.fillRect(
+        canvas.width / 2 - 90,
+        canvas.height / 2 + 120,
+        180,
+        50
+    );
+
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 24px Arial';
+
+    ctx.fillText(
+        'CONTROLS',
+        canvas.width / 2,
+        canvas.height / 2 + 152
+    );
+}
+
+
+function drawControls() {
+    ctx.fillStyle = '#080816';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+
+    ctx.fillText(
+        'CONTROLS',
+        canvas.width / 2,
+        canvas.height / 2 - 100
+    );
+
+    ctx.fillText('W / ↑ - Move Up', canvas.width / 2, 230);
+    ctx.fillText('S / ↓ - Move Down', canvas.width / 2, 270);
+    ctx.fillText('A / ← - Move Left', canvas.width / 2, 310);
+    ctx.fillText('D / → - Move Right', canvas.width / 2, 350);
+    ctx.fillText('SPACE - Shoot', canvas.width / 2, 390);
+
+    ctx.fillStyle = '#ff40d6';
+
+    ctx.fillRect(
+        canvas.width / 2 - 60,
+        430,
+        120,
+        40
+    );
+
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 20px Arial';
+
+    ctx.fillText(
+        'BACK',
+        canvas.width / 2,
+        456
+    );
+}
+
+function drawControls() {
+    ctx.fillStyle = '#080816';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        'CONTROLS',
+        canvas.width / 2,
+        canvas.height / 2 - 100
+    );
+
+    ctx.fillStyle = '#ff40d6';
+
+    ctx.fillRect(
+        canvas.width / 2 - 60,
+        430,
+        120,
+        40
+    );
+
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 20px Arial';
+
+    ctx.fillText(
+        'BACK',
+        canvas.width / 2,
+        456
+    );
+
+    ctx.fillText('W / ↑ - Move Up', canvas.width / 2, 230);
+    ctx.fillText('S / ↓ - Move Down', canvas.width / 2, 270);
+    ctx.fillText('A / ← - Move Left', canvas.width / 2, 310);
+    ctx.fillText('D / → - Move Right', canvas.width / 2, 350);
+    ctx.fillText('SPACE - Shoot', canvas.width / 2, 390);
 }
 
 function gameLoop() {
-    if(gameState == 'menu') {
+    if(gameState === 'menu') {
         drawMenu();
+        requestAnimationFrame(gameLoop);
+        return;
+    }
+
+    if(gameState === 'controls') {
+        drawControls();
         requestAnimationFrame(gameLoop);
         return;
     }
@@ -257,7 +371,6 @@ function gameLoop() {
     }
 
     if (keys[' ']) {
-
         if (shootCooldown <= 0) {
 
             bullets.push({
@@ -301,6 +414,7 @@ function gameLoop() {
     );
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.textAlign = 'left';
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '24px Arial';
