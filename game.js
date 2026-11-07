@@ -23,6 +23,7 @@ let gameState = 'menu';
 
 let keys = {};
 
+// Generate stars
 for (let index = 0; index < 100; index++) {
     stars.push({
         x: Math.random() * canvas.width,
@@ -32,6 +33,7 @@ for (let index = 0; index < 100; index++) {
     });
 }
 
+// Keyboard controls
 document.addEventListener('keydown', (event) => {
     keys[event.key.toLowerCase()] = true;
 
@@ -44,45 +46,62 @@ document.addEventListener('keyup', (event) => {
     keys[event.key.toLowerCase()] = false;
 });
 
+// All mouse click handling
 canvas.addEventListener('click', (event) => {
 
     let mouseX = event.offsetX;
     let mouseY = event.offsetY;
 
+    // RESTART button
     if (
         gameOver &&
         mouseX >= canvas.width / 2 - 75 &&
-        mouseX <= canvas.width / 2 - 75 + 150 &&
+        mouseX <= canvas.width / 2 + 75 &&
         mouseY >= canvas.height / 2 + 90 &&
-        mouseY <= canvas.height / 2 + 90 + 45
+        mouseY <= canvas.height / 2 + 135
     ) {
         restartGame();
+        return;
     }
-});
 
-canvas.addEventListener('click', (event) => {
-    let mouseX = event.offsetX;
-    let mouseY = event.offsetY;
-
-    if(gameState === 'menu' &&
-        mouseX >= 360 &&
-        mouseX <= 540 &&
-        mouseY >= 300 &&
-        mouseY <= 350
+    // PLAY button
+    if (
+        gameState === 'menu' &&
+        mouseX >= canvas.width / 2 - 90 &&
+        mouseX <= canvas.width / 2 + 90 &&
+        mouseY >= canvas.height / 2 + 50 &&
+        mouseY <= canvas.height / 2 + 100
     ) {
         gameState = 'playing';
+        return;
     }
 
-    if(gameState === 'menu' &&
-        mouseX >= 360 &&
-        mouseX <= 540 &&
-        mouseY >= 370 &&
-        mouseY <= 420
+    // CONTROLS button
+    if (
+        gameState === 'menu' &&
+        mouseX >= canvas.width / 2 - 90 &&
+        mouseX <= canvas.width / 2 + 90 &&
+        mouseY >= canvas.height / 2 + 120 &&
+        mouseY <= canvas.height / 2 + 170
     ) {
         gameState = 'controls';
+        return;
+    }
+
+    // BACK button
+    if (
+        gameState === 'controls' &&
+        mouseX >= canvas.width / 2 - 60 &&
+        mouseX <= canvas.width / 2 + 60 &&
+        mouseY >= 430 &&
+        mouseY <= 470
+    ) {
+        gameState = 'menu';
+        return;
     }
 });
 
+// Draw player spaceship
 function drawPlayer() {
 
     ctx.fillStyle = '#00f5ff';
@@ -111,6 +130,7 @@ function drawPlayer() {
     ctx.shadowBlur = 0;
 }
 
+// Draw stars
 function drawStar(star) {
 
     ctx.fillStyle = '#00f5ff';
@@ -126,12 +146,14 @@ function drawStar(star) {
     ctx.shadowBlur = 0;
 }
 
+// Draw bullets
 function drawBullet(bullet) {
 
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(bullet.x, bullet.y, 4, 15);
 }
 
+// Draw enemies
 function drawEnemies(enemy) {
 
     ctx.fillStyle = '#ff40d6';
@@ -142,6 +164,7 @@ function drawEnemies(enemy) {
     ctx.fill();
 }
 
+// Game Over screen
 function drawGameOver() {
 
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
@@ -169,6 +192,7 @@ function drawGameOver() {
         canvas.height / 2 + 50
     );
 
+    // RESTART button
     ctx.shadowBlur = 15;
     ctx.shadowColor = '#00f5ff';
 
@@ -196,6 +220,7 @@ function drawGameOver() {
     ctx.textAlign = 'left';
 }
 
+// Restart game
 function restartGame() {
 
     score = 0;
@@ -216,10 +241,14 @@ function restartGame() {
 
     keys = {};
 
+    gameState = 'playing';
+
     gameLoop();
 }
 
+// Main menu
 function drawMenu() {
+
     ctx.fillStyle = '#080816';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -271,10 +300,13 @@ function drawMenu() {
         canvas.width / 2,
         canvas.height / 2 + 152
     );
+
+    ctx.textAlign = 'left';
 }
 
-
+// Controls screen
 function drawControls() {
+
     ctx.fillStyle = '#080816';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -294,39 +326,7 @@ function drawControls() {
     ctx.fillText('D / → - Move Right', canvas.width / 2, 350);
     ctx.fillText('SPACE - Shoot', canvas.width / 2, 390);
 
-    ctx.fillStyle = '#ff40d6';
-
-    ctx.fillRect(
-        canvas.width / 2 - 60,
-        430,
-        120,
-        40
-    );
-
-    ctx.fillStyle = '#080816';
-    ctx.font = 'bold 20px Arial';
-
-    ctx.fillText(
-        'BACK',
-        canvas.width / 2,
-        456
-    );
-}
-
-function drawControls() {
-    ctx.fillStyle = '#080816';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#00f5ff';
-    ctx.font = 'bold 24px Arial';
-    ctx.textAlign = "center";
-
-    ctx.fillText(
-        'CONTROLS',
-        canvas.width / 2,
-        canvas.height / 2 - 100
-    );
-
+    // BACK button
     ctx.fillStyle = '#ff40d6';
 
     ctx.fillRect(
@@ -345,21 +345,19 @@ function drawControls() {
         456
     );
 
-    ctx.fillText('W / ↑ - Move Up', canvas.width / 2, 230);
-    ctx.fillText('S / ↓ - Move Down', canvas.width / 2, 270);
-    ctx.fillText('A / ← - Move Left', canvas.width / 2, 310);
-    ctx.fillText('D / → - Move Right', canvas.width / 2, 350);
-    ctx.fillText('SPACE - Shoot', canvas.width / 2, 390);
+    ctx.textAlign = 'left';
 }
 
+// Main game loop
 function gameLoop() {
-    if(gameState === 'menu') {
+
+    if (gameState === 'menu') {
         drawMenu();
         requestAnimationFrame(gameLoop);
         return;
     }
 
-    if(gameState === 'controls') {
+    if (gameState === 'controls') {
         drawControls();
         requestAnimationFrame(gameLoop);
         return;
@@ -370,7 +368,9 @@ function gameLoop() {
         return;
     }
 
+    // Shooting
     if (keys[' ']) {
+
         if (shootCooldown <= 0) {
 
             bullets.push({
@@ -387,6 +387,7 @@ function gameLoop() {
         shootCooldown--;
     }
 
+    // Player movement
     if (keys['arrowleft'] || keys['a']) {
         playerX -= playerSpeed;
     }
@@ -403,6 +404,7 @@ function gameLoop() {
         playerY += playerSpeed;
     }
 
+    // Player boundaries
     playerX = Math.max(
         25,
         Math.min(canvas.width - 25, playerX)
@@ -413,17 +415,21 @@ function gameLoop() {
         Math.min(canvas.height - 20, playerY)
     );
 
+    // Clear previous frame
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.textAlign = 'left';
 
+    // Score
     ctx.fillStyle = '#ffffff';
     ctx.font = '24px Arial';
     ctx.fillText('Score: ' + score, 20, 35);
 
+    // Health
     ctx.fillStyle = '#ff40d6';
     ctx.font = '24px Arial';
     ctx.fillText('Health: ' + health, 20, 65);
 
+    // Stars
     for (let star of stars) {
 
         star.y += star.speed;
@@ -436,6 +442,7 @@ function gameLoop() {
         drawStar(star);
     }
 
+    // Bullets
     for (let bullet of bullets) {
 
         bullet.y -= bullet.speed;
@@ -445,6 +452,7 @@ function gameLoop() {
 
     bullets = bullets.filter(bullet => bullet.y >= 0);
 
+    // Enemy spawning
     if (enemySpawnTimer <= 0) {
 
         enemies.push({
@@ -460,6 +468,7 @@ function gameLoop() {
         enemySpawnTimer--;
     }
 
+    // Move and draw enemies
     for (let enemy of enemies) {
 
         enemy.y += enemy.speed;
@@ -469,6 +478,7 @@ function gameLoop() {
 
     enemies = enemies.filter(enemy => enemy.y < canvas.height);
 
+    // Bullet-enemy collision
     let remainingBullets = [];
     let remainingEnemies = [];
 
@@ -506,6 +516,7 @@ function gameLoop() {
     bullets = remainingBullets;
     enemies = remainingEnemies;
 
+    // Player-enemy collision
     let survivingEnemies = [];
 
     for (let enemy of enemies) {
@@ -531,6 +542,7 @@ function gameLoop() {
         gameOver = true;
     }
 
+    // Flame animation
     flameSize += flameDirection;
 
     if (flameSize === 50) {
