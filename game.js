@@ -99,6 +99,18 @@ canvas.addEventListener('click', (event) => {
         gameState = 'menu';
         return;
     }
+
+    // EXIT button during gameplay
+    if (
+        gameState === 'playing' &&
+        mouseX >= canvas.width - 110 &&
+        mouseX <= canvas.width - 20 &&
+        mouseY >= 20 &&
+        mouseY <= 60
+    ) {
+        gameState = 'menu';
+        return;
+    }
 });
 
 // Draw player spaceship
@@ -428,6 +440,16 @@ function gameLoop() {
     ctx.fillStyle = '#ff40d6';
     ctx.font = '24px Arial';
     ctx.fillText('Health: ' + health, 20, 65);
+
+    // Exit Button
+    ctx.fillStyle = '#ff40d6';
+    ctx.fillRect(canvas.width - 110, 20, 90, 40);
+
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 18px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('EXIT', canvas.width - 65, 46);
+    ctx.textAlign = 'left';
 
     // Stars
     for (let star of stars) {
