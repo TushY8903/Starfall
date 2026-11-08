@@ -60,7 +60,7 @@ canvas.addEventListener('click', (event) => {
         mouseY >= canvas.height / 2 + 90 &&
         mouseY <= canvas.height / 2 + 135
     ) {
-        restartGame();
+        restartGame('playing');
         return;
     }
 
@@ -108,7 +108,7 @@ canvas.addEventListener('click', (event) => {
         mouseY >= 20 &&
         mouseY <= 60
     ) {
-        gameState = 'menu';
+        restartGame('menu');
         return;
     }
 });
@@ -233,8 +233,7 @@ function drawGameOver() {
 }
 
 // Restart game
-function restartGame() {
-
+function restartGame(nextState) {
     score = 0;
     health = 100;
     gameOver = false;
@@ -253,9 +252,7 @@ function restartGame() {
 
     keys = {};
 
-    gameState = 'playing';
-
-    gameLoop();
+    gameState = nextState;
 }
 
 // Main menu
@@ -377,6 +374,7 @@ function gameLoop() {
 
     if (gameOver) {
         drawGameOver();
+        requestAnimationFrame(gameLoop);
         return;
     }
 
