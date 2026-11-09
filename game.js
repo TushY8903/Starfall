@@ -100,6 +100,19 @@ canvas.addEventListener('click', (event) => {
         return;
     }
 
+    // PAUSE button
+    if (
+        gameState === 'playing' &&
+        mouseX >= canvas.width - 210 &&
+        mouseX <= canvas.width - 120 &&
+        mouseY >= 20 &&
+        mouseY <= 60
+    ) {
+        gameState = 'paused';
+        drawPause();
+        return;
+    }
+
     // EXIT button during gameplay
     if (
         gameState === 'playing' &&
@@ -107,6 +120,40 @@ canvas.addEventListener('click', (event) => {
         mouseX <= canvas.width - 20 &&
         mouseY >= 20 &&
         mouseY <= 60
+    ) {
+        restartGame('menu');
+        return;
+    }
+
+    // RESUME button
+    if (
+        gameState === 'paused' &&
+        mouseX >= canvas.width / 2 - 90 &&
+        mouseX <= canvas.width / 2 + 90 &&
+        mouseY >= canvas.height / 2 - 40 &&
+        mouseY <= canvas.height / 2 + 5
+    ) {
+        gameState = 'playing';
+        return;
+    }
+
+    if (
+        gameState === 'paused' &&
+        mouseX >= canvas.width / 2 - 90 &&
+        mouseX <= canvas.width / 2 + 90 &&
+        mouseY >= canvas.height / 2 + 20 &&
+        mouseY <= canvas.height / 2 + 65
+    ) {
+        restartGame('playing');
+        return;
+    }
+
+    if (
+        gameState === 'paused' &&
+        mouseX >= canvas.width / 2 - 90 &&
+        mouseX <= canvas.width / 2 + 90 &&
+        mouseY >= canvas.height / 2 + 80 &&
+        mouseY <= canvas.height / 2 + 125
     ) {
         restartGame('menu');
         return;
@@ -357,6 +404,80 @@ function drawControls() {
     ctx.textAlign = 'left';
 }
 
+// Controls pause
+function drawPause() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#ff40d6';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+
+    ctx.fillText(
+        'PAUSED',
+        canvas.width / 2,
+        canvas.height / 2 - 100
+    )
+
+    ctx.fillStyle = '#00f5ff';
+    ctx.fillRect(
+        canvas.width / 2 - 90,
+        canvas.height / 2 - 40,
+        180,
+        45
+    );
+
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 18px Arial';
+    ctx.textAlign = 'center';
+
+    ctx.fillText(
+        'RESUME',
+        canvas.width / 2,
+        canvas.height / 2 - 10
+    );
+
+    // RESTART button
+    ctx.fillStyle = '#ff40d6';
+    ctx.fillRect(
+        canvas.width / 2 - 90,
+        canvas.height / 2 + 20,
+        180,
+        45
+    );
+
+    // RESTART text
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 18px Arial';
+    ctx.textAlign = 'center';
+
+    ctx.fillText(
+        'RESTART',
+        canvas.width / 2,
+        canvas.height / 2 + 50
+    );
+
+    // MAIN MENU button
+    ctx.fillStyle = '#00f5ff';
+    ctx.fillRect(
+        canvas.width / 2 - 90,
+        canvas.height / 2 + 80,
+        180,
+        45
+    );
+
+    // MAIN MENU text
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 18px Arial';
+    ctx.textAlign = 'center';
+
+    ctx.fillText(
+        'MAIN MENU',
+        canvas.width / 2,
+        canvas.height / 2 + 110
+    );
+}
+
 // Main game loop
 function gameLoop() {
 
@@ -370,6 +491,11 @@ function gameLoop() {
         drawControls();
         requestAnimationFrame(gameLoop);
         return;
+    }
+
+    if(gameState === 'paused') {
+        requestAnimationFrame(gameLoop);
+        return; 
     }
 
     if (gameOver) {
@@ -447,6 +573,16 @@ function gameLoop() {
     ctx.font = 'bold 18px Arial';
     ctx.textAlign = 'center';
     ctx.fillText('EXIT', canvas.width - 65, 46);
+    ctx.textAlign = 'left';
+
+    // Pause Button
+    ctx.fillStyle = '#00f5ff';
+    ctx.fillRect(canvas.width - 210, 20, 90, 40);
+
+    ctx.fillStyle = '#080816';
+    ctx.font = 'bold 18px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('PAUSE', canvas.width - 165, 46);
     ctx.textAlign = 'left';
 
     // Stars
