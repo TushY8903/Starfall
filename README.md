@@ -13,10 +13,14 @@ Starfall is a neon-themed 2D space shooter game developed as an individual Softw
 - Shooting mechanics
 - Enemy spaceships and spawning
 - Bullet-enemy collision detection
+- Player-enemy collision detection
 - Player health system
 - Score system
-- Game Over detection
-- Neon Game Over screen
+- Game Over screen and detection
+- Pause and Resume functionality
+- Pause menu with Resume, Restart, and Main Menu options
+- Restart functionality
+- Main menu and Controls screen
 
 ## 🕹️ Controls
 
