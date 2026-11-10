@@ -4,6 +4,7 @@ const ctx = canvas.getContext('2d');
 let bullets = [];
 let stars = [];
 let enemies = [];
+let explosions = [];
 
 let score = 0;
 let health = 100;
@@ -478,6 +479,87 @@ function drawPause() {
     );
 }
 
+//Control Explotion
+function createExplosion(x, y) {
+
+    for (let i = 0; i < 12; i++) {
+
+        explosions.push({
+            x: x,
+            y: y,
+            size: Math.random() * 4 + 2,
+            speedX: (Math.random() - 0.5) * 8,
+            speedY: (Math.random() - 0.5) * 8,
+            alpha: 1,
+            color: Math.random() < 0.5 ? '#ff40d6' : '#00f5ff'
+        });
+
+    }
+}
+
+function updateExplosions() {
+
+    for (let explosion of explosions) {
+
+        explosion.x += explosion.speedX;
+        explosion.y += explosion.speedY;
+
+        explosion.alpha -= 0.03;
+
+    }
+
+    explosions = explosions.filter(
+        explosion => explosion.alpha > 0
+    );
+
+}
+
+function drawExplosions() {
+
+    for (let explosion of explosions) {
+
+        ctx.globalAlpha = explosion.alpha;
+
+        // Outer neon particle
+        ctx.fillStyle = explosion.color;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = explosion.color;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            explosion.x,
+            explosion.y,
+            explosion.size,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        // White inner highlight
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#ffffff';
+
+        ctx.beginPath();
+
+        ctx.arc(
+            explosion.x,
+            explosion.y,
+            explosion.size / 2,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+    }
+
+    ctx.globalAlpha = 1;
+}
+
 // Main game loop
 function gameLoop() {
 
@@ -658,6 +740,8 @@ function gameLoop() {
                 enemyHit = true;
                 bullet.hit = true;
 
+                createExplosion(enemy.x, enemy.y);
+
                 score += 10;
             }
         }
@@ -684,8 +768,9 @@ function gameLoop() {
 
         if (distance < 35) {
 
-            health = Math.max(0, health - 20);
+            createExplosion(enemy.x, enemy.y);
 
+            health = Math.max(0, health - 20);
         } else {
 
             survivingEnemies.push(enemy);
@@ -697,6 +782,10 @@ function gameLoop() {
     if (health <= 0) {
         gameOver = true;
     }
+
+    // Explosion animation
+    updateExplosions();
+    drawExplosions();
 
     // Flame animation
     flameSize += flameDirection;
