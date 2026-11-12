@@ -1,6 +1,19 @@
-
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+
+const shootSound = new Audio('./assets/sounds/shoot.mp3');
+const explosion = new Audio('./assets/sounds/explosion.mp3');
+
+shootSound.volume = 0.4;
+explosion.volume = 0.4;
+
+shootSound.addEventListener('canplaythrough', () => {
+    console.log('Shoot sound loaded successfully!');
+});
+
+shootSound.addEventListener('error', () => {
+    console.log('Sound loading failed:', shootSound.error);
+});
 
 // Original game coordinate system
 const GAME_WIDTH = 900;
@@ -338,9 +351,6 @@ function restartGame(nextState) {
     playerX = GAME_WIDTH / 2;
     playerY = 400;
 
-    flameSize = 40;
-    flameDirection = 1;
-
     keys = {};
 
     gameState = nextState;
@@ -646,13 +656,18 @@ function gameLoop() {
 
     // Shooting
     if (keys[' ']) {
-
         if (shootCooldown <= 0) {
 
             bullets.push({
                 x: playerX,
                 y: playerY - 30,
                 speed: 7
+            });
+
+            shootSound.currentTime = 0;
+
+            shootSound.play().catch(error => {
+                console.log('Shooting sound error:', error);
             });
 
             shootCooldown = 10;
@@ -790,9 +805,15 @@ function gameLoop() {
         drawEnemies(enemy);
     }
 
-    enemies = enemies.filter(
-        enemy => enemy.y < GAME_HEIGHT
-    );
+    enemies = enemies.filter(enemy => {
+
+    if (enemy.y >= GAME_HEIGHT) {
+        health = Math.max(0, health - 10);
+        return false;
+    }
+
+        return true;
+    });
 
     // Bullet-enemy collision
     let remainingBullets = [];
@@ -872,17 +893,6 @@ function gameLoop() {
     // Explosion animation
     updateExplosions();
     drawExplosions();
-
-    // Flame animation
-    flameSize += flameDirection;
-
-    if (flameSize >= 50) {
-        flameDirection = -1;
-    }
-
-    if (flameSize <= 30) {
-        flameDirection = 1;
-    }
 
     // Draw player
     drawPlayer();
