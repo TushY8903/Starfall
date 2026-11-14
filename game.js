@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 const shootSound = new Audio('./assets/sounds/shoot.mp3');
 const explosion = new Audio('./assets/sounds/explosion.mp3');
 
-shootSound.volume = 0.4;
+shootSound.volume = 0.2;
 explosion.volume = 0.4;
 
 shootSound.addEventListener('canplaythrough', () => {
@@ -246,6 +246,19 @@ function drawStar(star) {
     ctx.shadowBlur = 0;
 }
 
+function updateAndDrawStars() {
+    for (let star of stars) {
+        star.y += star.speed;
+
+        if (star.y > GAME_HEIGHT) {
+            star.y = 0;
+            star.x = Math.random() * GAME_WIDTH;
+        }
+
+        drawStar(star);
+    }
+}
+
 // Draw bullets
 function drawBullet(bullet) {
 
@@ -361,6 +374,8 @@ function drawMenu() {
 
     ctx.fillStyle = '#080816';
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+    updateAndDrawStars();
 
     // STARFALL title
     ctx.fillStyle = '#00f5ff';
@@ -534,6 +549,12 @@ function drawPause() {
 
 // Create explosion
 function createExplosion(x, y) {
+
+    explosion.currentTime = 0;
+
+    explosion.play().catch(error => {
+        console.log('Explosion sound error:', error);
+    });
 
     for (let i = 0; i < 12; i++) {
 
@@ -757,17 +778,7 @@ function gameLoop() {
     ctx.textAlign = 'left';
 
     // Stars
-    for (let star of stars) {
-
-        star.y += star.speed;
-
-        if (star.y > GAME_HEIGHT) {
-            star.y = 0;
-            star.x = Math.random() * GAME_WIDTH;
-        }
-
-        drawStar(star);
-    }
+    updateAndDrawStars();
 
     // Bullets
     for (let bullet of bullets) {
