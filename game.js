@@ -294,6 +294,8 @@ function drawGameOver() {
     ctx.fillStyle = '#080816';
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
+    updateAndDrawStars();
+
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
@@ -434,6 +436,8 @@ function drawControls() {
 
     ctx.fillStyle = '#080816';
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+    updateAndDrawStars();
 
     ctx.fillStyle = '#00f5ff';
     ctx.font = 'bold 24px Arial';
