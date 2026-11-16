@@ -67,7 +67,7 @@ let flameDirection = 1;
 
 let playerX = 450;
 let playerY = 400;
-let playerSpeed = 5;
+let playerSpeed = 7;
 
 let gameState = 'menu';
 let keys = {};
@@ -695,7 +695,7 @@ function gameLoop() {
                 console.log('Shooting sound error:', error);
             });
 
-            shootCooldown = 10;
+            shootCooldown = 6;
         }
     }
 
@@ -805,7 +805,10 @@ function gameLoop() {
             speed: Math.random() * 2 + 1
         });
 
-        enemySpawnTimer = 60;
+        enemySpawnTimer = Math.max(
+            20,
+            60 - Math.floor(score / 50) * 5
+        );
     }
 
     if (enemySpawnTimer > 0) {
