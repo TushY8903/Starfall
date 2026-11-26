@@ -1,10 +1,12 @@
+
 {
   "name": "starfall",
   "version": "1.0.0",
-  "description": "",
+  "description": "A neon-themed 2D space shooter game",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder --win"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +15,23 @@
   "devDependencies": {
     "electron": "^45.1.0",
     "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.starfall.game",
+    "productName": "Starfall",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "game.js",
+      "style.css",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    }
   }
 }
