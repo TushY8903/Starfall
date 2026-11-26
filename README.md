@@ -2,8 +2,6 @@
 
 **Starfall** is a neon-themed 2D space shooter game developed as an individual Software Development Project using Electron, HTML, CSS, and JavaScript.
 
-The game features a futuristic space environment where players control a spaceship, shoot enemies, avoid collisions, and try to achieve the highest score.
-
 ## 🎮 Features
 
 - Electron desktop application
@@ -23,6 +21,7 @@ The game features a futuristic space environment where players control a spacesh
 - Pause menu with Resume, Restart, and Main Menu options
 - Game Over screen with final score
 - Restart functionality
+- Custom application icon
 
 ## 🕹️ Controls
 
@@ -42,13 +41,11 @@ The game features a futuristic space environment where players control a spacesh
 - Electron
 - HTML Canvas
 
-## 💻 Installation and Running
-
-To run Starfall from the source code:
+## 💻 Run from Source Code
 
 1. Clone or download this repository.
 2. Open the project folder in a terminal.
-3. Install the dependencies:
+3. Install dependencies:
 
    ```bash
    npm install
@@ -60,27 +57,19 @@ To run Starfall from the source code:
    npm start
    ```
 
-## 📦 Building for Windows
+## 📦 Windows Installation
 
-Starfall uses Electron Builder to create a Windows installer.
+Download the Windows installer from:
 
-Run:
+[Download Starfall v1.0.0](https://github.com/TushY8903/Starfall/releases/tag/v1.0.0)
 
-```bash
-npm run build
-```
+Run `Starfall.Setup.1.0.0.exe` to install the game.
 
-The installer will be generated inside the `dist` folder:
+## 📌 Future Improvements
 
-```text
-Starfall Setup 1.0.0.exe
-```
-
-## 📌 Planned Improvements
-
-- Custom Starfall application icon
-- Additional visual and audio improvements
-- Further gameplay polishing
+- Additional enemy types
+- Difficulty progression
+- Further gameplay and visual improvements
 
 ## 👩‍💻 Developer
 
@@ -88,4 +77,4 @@ An individual academic project developed.
 
 ## 📅 Project Status
 
-Under development. Core gameplay and Windows installer have been implemented and tested.
+**Version 1.0.0 released.** Core gameplay features and the Windows installer have been implemented and tested.
