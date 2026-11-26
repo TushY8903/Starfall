@@ -7,10 +7,6 @@ const explosion = new Audio('./assets/sounds/explosion.mp3');
 shootSound.volume = 0.2;
 explosion.volume = 0.4;
 
-shootSound.addEventListener('canplaythrough', () => {
-    console.log('Shoot sound loaded successfully!');
-});
-
 shootSound.addEventListener('error', () => {
     console.log('Sound loading failed:', shootSound.error);
 });
